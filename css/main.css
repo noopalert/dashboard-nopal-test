@@ -1,0 +1,132 @@
+:root{
+    --primary: #F6FCDF;
+    --secondary: #31511E;
+    --tersier: #859F3D; 
+    --primary-font: #31511E; 
+    --second-font: #F6FCDF;
+}
+
+html, body{
+    background-color: var(--primary);
+}
+
+.navbar{
+    background-color: var(--secondary);
+}
+
+.navbar .container-fluid .navbar-brand{
+    color: var(--second-font);
+}
+
+.navbar .container-fluid .offcanvas{
+    background-color: var(--primary);
+}
+
+
+.navbar 
+.container-fluid 
+.offcanvas 
+.nav-link{
+    color: var(--primary-font);
+}
+.navbar 
+.container-fluid 
+.offcanvas 
+.nav-link:hover{
+    color: var(--second-font);
+}
+
+.navbar
+.container-fluid
+.offcanvas
+.offcanvas-body
+.navbar-nav
+.nav-item{
+    text-align: center;
+    transition: .3s;
+}
+
+.navbar
+.container-fluid
+.offcanvas
+.offcanvas-body
+.navbar-nav
+.nav-item:hover{
+    background-color: var(--tersier);
+    border-radius: 5px;
+}
+
+.dropdown
+.dropdown-menu{
+    background-color: var(--tersier);
+}
+
+.dropdown-menu li a{
+    color: var(--second-font);
+    border-radius: 5px;
+}
+.dropdown-menu li a:hover{
+    background-color: var(--primary);
+    color: var(--primary-font
+    );
+}
+
+#card-content{
+    margin-top: 100px;
+    background-color: var(--primary);
+}
+
+.container-fluid
+#chart{
+    background-color: var(--primary);
+}
+
+#card-body{
+    background-color: var(--secondary);
+    color: var(--primary);
+}
+
+.asc{
+    background-color: var(--primary);
+    border-radius: 5px;
+    border-color: white;
+}
+
+.desc{
+    background-color: var(--primary);
+    border-radius: 5px;
+    border-color: white;
+}
+
+.reset{
+    background-color: var(--primary);
+    border-radius: 5px;
+    border-color: white;
+}
+
+#body-content{
+    background-color: var(--primary);
+}
+
+#chart{
+    background-color: var(--primary);
+}
+
+#tabledatas{
+    background-color: var(--primary);
+}
+
+div .button-pdf{
+    background-color: var(--primary);
+}
+
+#footer{
+    align-items: center;
+    text-align: center;
+    background-color: var(--secondary);
+    color: var(--second-font);
+    padding: 20px;
+    bottom: 0;
+    width: 100%;
+}
+

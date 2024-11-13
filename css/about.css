@@ -1,0 +1,31 @@
+:root{
+    --primary: #F6FCDF;
+    --secondary: #31511E;
+    --tersier: #859F3D; 
+    --primary-font: #31511E; 
+    --second-font: #F6FCDF;
+}
+
+#container-about{
+    align-items: center;
+    background-color: var(--primary);
+    text-align: center;
+    margin-top: 55px;
+    margin-bottom: 63px;
+}
+
+#container-about p{
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+#footer-about{
+    align-items: center;
+    text-align: center;
+    background-color: var(--secondary);
+    color: var(--second-font);
+    padding: 20px;
+    bottom: 0;
+    position: fixed;
+    width: 100%;
+}
