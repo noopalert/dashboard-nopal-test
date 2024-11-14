@@ -315,12 +315,14 @@ async function chartDriver(){
 chartDriver()
 
 
-
+//Function Chart Transaction
 async function chartTransaction() {
     let fourthChart
     let fifthChart
+    let sixthChart
     var ctx = document.getElementById('fourthChart').getContext('2d')
     var ctx2 = document.getElementById('fifthChart').getContext('2d')
+    var ctx3 = document.getElementById('sixthChart').getContext('2d')
 
     const response = await fetch('datas/data_mart_transaction.json')
     const jsonData = await response.json()
@@ -328,25 +330,36 @@ async function chartTransaction() {
     const categoryCounts = {}
     const distanceAvg = {}
     const orderTimeAvg = {}
+    const distanceRangeCounts = {}
+    const deliveryAmountAvg = {}
 
     jsonData.fact.forEach((transaction)=>{
         const category = transaction.category_name
         const totalAmount = transaction.transaction_amount_total
         const distance = transaction.distance
         const orderTime = transaction.order_range_time
+        const distanceRange = transaction.distance_range
+        const deliveryAmount = transaction.amount_delivery
 
         categoryCounts[category] = (categoryCounts[category] || 0) + 1
         totalAmountSums[category] = ((totalAmountSums[category] || 0) + totalAmount)
         distanceAvg[category] = ((distanceAvg[category] || 0) + distance)
         orderTimeAvg[category] = ((orderTimeAvg[category] || 0) + orderTime)
+        distanceRangeCounts[distanceRange] = (distanceRangeCounts[distanceRange] || 0) + 1
+        deliveryAmountAvg[distanceRange] = (deliveryAmountAvg[distanceRange] || 0) + deliveryAmount
     })
     
-
+    //Labeling
     const categoryLabel = Object.keys(categoryCounts)
+    const distanceRangeLabel = Object.keys(distanceRangeCounts)
+
+    //Data
     const categoryData = Object.values(categoryCounts)
     const totalAmountSumsData = Object.values(totalAmountSums)
+
     const distanceAvgData = categoryLabel.map((category) => distanceAvg[category] / categoryCounts[category])
     const orderTimeAvgData = categoryLabel.map((category) => orderTimeAvg[category] / categoryCounts[category])
+    const distanceRangeData = distanceRangeLabel.map((distance_range) => deliveryAmountAvg[distance_range] / distanceRangeCounts[distance_range])
 
 
     //set dataset
@@ -394,6 +407,17 @@ async function chartTransaction() {
         yAxisID: 'y2',
         type: 'line',
         tension: 0.5
+    }
+
+    const distanceRangeDatasets = {
+        label: 'Delibery Fee by Distance',
+        data: distanceRangeData,
+        backgroundColor: ['rgba(194,131,94, 0.5)'],
+        borderColor: ['rgba(194,131,94, 1)'],
+        borderWidth: 1,
+        yAxisID: 'y',
+        type: 'bar',
+        fill:false
     }
 
     fourthChart = new Chart(ctx,{
@@ -468,6 +492,26 @@ async function chartTransaction() {
                     display: true,
                     text: 'Comparison Distance per Category and Order Range Time'
                 },
+            }
+        }
+    })
+
+    sixthChart = new Chart(ctx3,{
+        data:{
+            labels: distanceRangeLabel,
+            datasets: [distanceRangeDatasets]
+        },
+        options: {
+            scales:{
+                y:{
+                    type: 'linear',
+                    position: 'left',
+                    beginAtZero: true,
+                    title:{
+                        display: true,
+                        text: 'Average Fee'
+                    }
+                }
             }
         }
     })
