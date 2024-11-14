@@ -51,7 +51,7 @@ async function chartCustomer() {
         data: {
             labels: kecamatanLabel,
             datasets: [{
-                label: 'Jumlah Transaksi per Kecamatan',
+                label: 'Kecamatan',
                 data: kecamatanData,
                 backgroundColor: ['rgba(75, 192, 192, 0.5)','rgba(75, 192, 192, 0.5)','rgba(75, 192, 192, 0.5)','rgba(75, 192, 192, 0.5)','rgba(75, 192, 192, 0.5)','rgba(75, 192, 192, 0.5)'],
                 borderColor:['rgba(75, 192, 192, 1)','rgba(75, 192, 192, 1)','rgba(75, 192, 192, 1)','rgba(75, 192, 192, 1)','rgba(75, 192, 192, 1)','rgba(75, 192, 192, 1)',],
@@ -93,6 +93,10 @@ async function chartCustomer() {
                             topPosition: '0'
                         }
                     }
+                },
+                title:{
+                    display: true,
+                    text: 'Transaction per Kecamatan'
                 }
             }
         },
@@ -314,26 +318,35 @@ chartDriver()
 
 async function chartTransaction() {
     let fourthChart
+    let fifthChart
     var ctx = document.getElementById('fourthChart').getContext('2d')
+    var ctx2 = document.getElementById('fifthChart').getContext('2d')
 
     const response = await fetch('datas/data_mart_transaction.json')
     const jsonData = await response.json()
     const totalAmountSums = {}
     const categoryCounts = {}
+    const distanceAvg = {}
+    const orderTimeAvg = {}
+
     jsonData.fact.forEach((transaction)=>{
         const category = transaction.category_name
         const totalAmount = transaction.transaction_amount_total
-        let sortCategory = {}
+        const distance = transaction.distance
+        const orderTime = transaction.order_range_time
 
         categoryCounts[category] = (categoryCounts[category] || 0) + 1
-        totalAmountSums[category] = (totalAmountSums[category] || 0) + totalAmount
-
+        totalAmountSums[category] = ((totalAmountSums[category] || 0) + totalAmount)
+        distanceAvg[category] = ((distanceAvg[category] || 0) + distance)
+        orderTimeAvg[category] = ((orderTimeAvg[category] || 0) + orderTime)
     })
-    console.log(categoryCounts)
+    
 
     const categoryLabel = Object.keys(categoryCounts)
     const categoryData = Object.values(categoryCounts)
-    const totalAmountSumsData = totalAmountSums
+    const totalAmountSumsData = Object.values(totalAmountSums)
+    const distanceAvgData = categoryLabel.map((category) => distanceAvg[category] / categoryCounts[category])
+    const orderTimeAvgData = categoryLabel.map((category) => orderTimeAvg[category] / categoryCounts[category])
 
 
     //set dataset
@@ -351,6 +364,29 @@ async function chartTransaction() {
     const totalAmountDataset = {
         label: 'Total Amount',
         data: totalAmountSumsData,
+        backgroundColor: 'rgba(255, 99, 132, 0.6)',
+        borderColor: 'rgba(255, 99, 132, 1)',
+        borderWidth: 2,
+        fill: false,
+        yAxisID: 'y2',
+        type: 'line',
+        tension: 0.5
+    }
+
+    const distanceDatasets = {
+        label: 'Distance per Category',
+        data: distanceAvgData,
+        backgroundColor: ['rgba(194,131,94, 0.5)'],
+        borderColor: ['rgba(194,131,94, 1)'],
+        borderWidth: 1,
+        yAxisID: 'y1',
+        type: 'bar',
+        fill:false
+    }
+
+    const orderTimeDatasets =  {
+        label: 'Average Order Time',
+        data: orderTimeAvgData,
         backgroundColor: 'rgba(255, 99, 132, 0.6)',
         borderColor: 'rgba(255, 99, 132, 1)',
         borderWidth: 2,
@@ -394,9 +430,48 @@ async function chartTransaction() {
                     display: true,
                     text: 'Comparison Category and Amount'
                 },
-            },
+            }
         }
     })
+
+    fifthChart = new Chart(ctx2,{
+        data:{
+            labels: categoryLabel,
+            datasets: [distanceDatasets, orderTimeDatasets]
+        },
+        options:{
+            scales:{
+                y1: {
+                    type: 'linear',
+                    position: 'left',
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Distance (km)'
+                    }
+                },
+                y2: {
+                    type: 'linear',
+                    position: 'right',
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Time (s)'
+                    },
+                    grid: {
+                        drawOnChartArea: false 
+                    }
+                },
+            },
+            plugins:{
+                title:{
+                    display: true,
+                    text: 'Comparison Distance per Category and Order Range Time'
+                },
+            }
+        }
+    })
+    
 }
 chartTransaction()
 
