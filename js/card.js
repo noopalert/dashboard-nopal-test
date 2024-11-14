@@ -2,7 +2,7 @@ async function fetchDataAndUpdateCard(cardId, titleText, dataKey) {
     const cardValue = document.getElementById(`card-value${cardId}`);
     const cardTitle = document.getElementById(`card-title${cardId}`);
     
-    const response = await fetch('datas/data_mart_transaction.json');
+    const response = await fetch('/datas/data_mart_transaction.json');
     const jsonData = await response.json();
 
     const sumData = {};

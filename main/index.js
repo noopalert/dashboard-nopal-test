@@ -3,7 +3,7 @@ async function chartCustomer() {
     var ctx = document.getElementById('firstChart').getContext('2d');
     var ctx2 = document.getElementById('secondChart').getContext('2d')
 
-    const response = await fetch('datas/data_mart_customer.json');
+    const response = await fetch('/datas/data_mart_customer.json');
     const jsonData = await response.json();
 
     const kecamatanCounts = {}
@@ -186,7 +186,7 @@ async function chartDriver(){
     let thirdChart
     var ctx = document.getElementById('thirdChart').getContext('2d')
     const genderFilter = document.getElementById('genderFilter')
-    const response = await fetch('datas/data_mart_driver.json')
+    const response = await fetch('/datas/data_mart_driver.json')
     const jsonData = await response.json()
 
 
@@ -324,7 +324,7 @@ async function chartTransaction() {
     var ctx2 = document.getElementById('fifthChart').getContext('2d')
     var ctx3 = document.getElementById('sixthChart').getContext('2d')
 
-    const response = await fetch('datas/data_mart_transaction.json')
+    const response = await fetch('/datas/data_mart_transaction.json')
     const jsonData = await response.json()
     const totalAmountSums = {}
     const categoryCounts = {}
